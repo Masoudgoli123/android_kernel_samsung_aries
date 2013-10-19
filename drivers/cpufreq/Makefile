@@ -18,6 +18,8 @@ obj-$(CONFIG_CPU_FREQ_GOV_ZZMOOVE)      += cpufreq_zzmoove.o
 obj-$(CONFIG_CPU_FREQ_GOV_ABYSSPLUG)  	+= cpufreq_abyssplug.o
 obj-$(CONFIG_CPU_FREQ_GOV_LAGFREE)  	+= cpufreq_lagfree.o
 obj-$(CONFIG_CPU_FREQ_GOV_ONDEMANDX)    += cpufreq_ondemandx.o 
+obj-$(CONFIG_CPU_FREQ_GOV_ASSWAX)  	+= cpufreq_asswax.o
+obj-$(CONFIG_CPU_FREQ_GOV_SAVAGEDZEN)  += cpufreq_savagedzen.o
 
 # CPUfreq cross-arch helpers
 obj-$(CONFIG_CPU_FREQ_TABLE)		+= freq_table.o
