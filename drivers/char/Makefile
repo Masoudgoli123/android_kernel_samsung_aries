@@ -2,8 +2,6 @@
 # Makefile for the kernel character device drivers.
 #
 
-obj-m := frandom.o
-
 obj-y				+= mem.o random.o
 obj-$(CONFIG_TTY_PRINTK)	+= ttyprintk.o
 obj-y				+= misc.o
@@ -66,3 +64,5 @@ obj-$(CONFIG_RAMOOPS)		+= ramoops.o
 
 obj-$(CONFIG_JS_RTC)		+= js-rtc.o
 js-rtc-y = rtc.o
+
+obj-$(CONFIG_FRANDOM)		+= frandom.o
