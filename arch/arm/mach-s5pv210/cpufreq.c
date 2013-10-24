@@ -104,25 +104,25 @@ static unsigned int g_dvfslockval[DVFS_LOCK_TOKEN_NUM];
 //static DEFINE_MUTEX(dvfs_high_lock);
 #endif
 #ifdef CONFIG_MACH_ARIES
-const unsigned long arm_volt_max = 1500000;
-const unsigned long int_volt_max = 1300000;
+const unsigned long arm_volt_max = 1350000;
+const unsigned long int_volt_max = 1250000;
 
 static struct s5pv210_dvs_conf dvs_conf[] = {
 	[OC0] = {
                 .arm_volt = 1350000,
-                .int_volt = 1200000,
+                .int_volt = 1150000,
         },
         [OC1] = {
                 .arm_volt = 1325000,
-                .int_volt = 1200000,
+                .int_volt = 1125000,
         },
         [OC2] = {
                 .arm_volt = 1275000,
-                .int_volt = 1200000,
+                .int_volt = 1100000,
         },
         [OC3] = {
                 .arm_volt = 1275000,
-                .int_volt = 1500000,
+                .int_volt = 1100000,
         },
 	[L0] = {
 		.arm_volt   = 1275000,
