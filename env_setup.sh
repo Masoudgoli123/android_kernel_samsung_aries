@@ -30,7 +30,7 @@ export USER=`whoami`
 export TMPFILE=`mktemp -t`;
 
 # system compiler
-export CROSS_COMPILE=$PARENT_DIR/linaro-toolchain-4.7-2013.09/bin/arm-eabi-;
+export CROSS_COMPILE=$PARENT_DIR/linaro-toolchain-4.8-2013.09/bin/arm-eabi-;
 
 export NUMBEROFCPUS=`grep 'processor' /proc/cpuinfo | wc -l`;
 
