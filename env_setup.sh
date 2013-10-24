@@ -17,7 +17,7 @@ ln -s ${KERNELDIR} source;
 # check if parallel installed, if not install
 if [ ! -e /usr/bin/parallel ]; then
 	echo "You must install 'parallel' by this script to continue.";
-	sudo dpkg -i parallel_20120422-1_all.deb
+	sudo dpkg -i ${KERNELDIR}/utilities/parallel_20120422-1_all.deb
 fi
 
 # kernel
