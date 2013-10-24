@@ -43,7 +43,8 @@
 #include <linux/notifier.h>
 #include <linux/device.h>
 #include <linux/err.h>
-#include <linux/mm_inline.h> 
+#include <linux/mm_inline.h>
+#include <linux/earlysuspend.h> 
 
 static uint32_t lowmem_debug_level = 1;
 static short lowmem_adj[6] = {
@@ -63,6 +64,22 @@ static int lowmem_minfree[6] = {
         8 * 1024,	/* 32MB */
         16 * 1024,	/* 64MB */
 };
+static int lowmem_minfree_screen_on[6] = {
+        2 * 1024,	/* 8MB */
+        5 * 512,	/* 10MB */
+        3 * 1024,	/* 12MB */
+        7 * 512,	/* 14MB */
+        8 * 1024,	/* 32MB */
+        16 * 1024,	/* 64MB */
+};
+static int lowmem_minfree_screen_off[6] = {
+        5 * 512,	/* 10MB */
+        3 * 1024,	/* 12MB */
+        7 * 512,	/* 14MB */
+        8 * 1024,	/* 32MB */
+        16 * 1024,	/* 64MB */
+        32 * 1024,	/* 128MB */
+}; 
 static int lowmem_minfree_size = 6;
 
 static int white_list[6] = {
@@ -414,6 +431,22 @@ static DEVICE_ATTR(lmk_state, 0664, lmk_state_show, lmk_state_store);
 
 #endif /* CONFIG_ZRAM_FOR_ANDROID */
 
+static void low_mem_early_suspend(struct early_suspend *handler)
+{
+	memcpy(lowmem_minfree_screen_on, lowmem_minfree, sizeof(lowmem_minfree));
+	memcpy(lowmem_minfree, lowmem_minfree_screen_off, sizeof(lowmem_minfree_screen_off));
+}
+
+static void low_mem_late_resume(struct early_suspend *handler)
+{
+	memcpy(lowmem_minfree, lowmem_minfree_screen_on, sizeof(lowmem_minfree_screen_on));
+}
+
+static struct early_suspend low_mem_suspend = {
+	.suspend = low_mem_early_suspend,
+	.resume = low_mem_late_resume,
+}; 
+
 static int __init lowmem_init(void)
 {
 #ifdef CONFIG_ZRAM_FOR_ANDROID
@@ -421,6 +454,7 @@ static int __init lowmem_init(void)
 	unsigned int high_wmark = 0;
 	unsigned int low_wmark = 0;
 #endif 
+	register_early_suspend(&low_mem_suspend);
 	register_shrinker(&lowmem_shrinker);
 #ifdef CONFIG_ZRAM_FOR_ANDROID
         for_each_zone(zone) {
@@ -460,6 +494,8 @@ module_param_named(cost, lowmem_shrinker.seeks, int, S_IRUGO | S_IWUSR);
 module_param_array_named(adj, lowmem_adj, short, &lowmem_adj_size,
 			 S_IRUGO | S_IWUSR);
 module_param_array_named(minfree, lowmem_minfree, uint, &lowmem_minfree_size,
+			 S_IRUGO | S_IWUSR);
+module_param_array_named(minfree_screen_off, lowmem_minfree_screen_off, uint, &lowmem_minfree_size,
 			 S_IRUGO | S_IWUSR);
 module_param_array_named(w_list, white_list, int, &white_list_size,
 			 S_IRUGO | S_IWUSR);
