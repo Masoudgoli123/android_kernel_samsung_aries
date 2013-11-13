@@ -95,7 +95,7 @@ unsigned int dirty_writeback_interval = 0; /* centiseconds */
 /*
  * The longest time for which data is allowed to remain dirty
  */
-unsigned int dirty_expire_interval = 30 * 100; /* centiseconds */
+unsigned int dirty_expire_interval = 200; /* centiseconds */
 
 /*
  * Flag that makes the machine dump writes/reads and block dirtyings.
@@ -775,12 +775,18 @@ static struct notifier_block __cpuinitdata ratelimit_nb = {
 
 static void dirty_early_suspend(struct early_suspend *handler)
 {
-	dirty_writeback_interval = 15 * 100;
+	dirty_background_ratio = 18;
+	vm_dirty_ratio = 21;
+	dirty_writeback_interval = 2000;
+	dirty_expire_interval = 1000;
 }
 
 static void dirty_late_resume(struct early_suspend *handler)
 {
-	dirty_writeback_interval = 5 * 100;
+	dirty_background_ratio = 9;
+	vm_dirty_ratio = 11;
+	dirty_writeback_interval = 0;
+	dirty_expire_interval = 200;
 }
 
 static struct early_suspend dirty_suspend = {
